@@ -13,6 +13,8 @@ fun `2 Cancellation`() = runBlocking {
             }
         } finally {
             println("I am out!")
+            delay(100)
+            println("Am I?")
         }
     }
     job.cancel()

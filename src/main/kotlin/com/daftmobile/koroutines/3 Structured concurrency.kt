@@ -9,7 +9,7 @@ fun `3 Structured concurrency`() = runBlocking(Dispatchers.Default) {
         launch {
             println(1)
         }
-        launch {
+        launch(Job()) {
             delay(1000)
             println(2)
         }

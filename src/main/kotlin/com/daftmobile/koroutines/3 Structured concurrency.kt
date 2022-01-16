@@ -9,12 +9,11 @@ fun `3 Structured concurrency`() = runBlocking(Dispatchers.Default) {
         launch {
             println(1)
         }
-        launch(Job()) {
+        launch(Job(parent = coroutineContext[Job])) {
             delay(1000)
             println(2)
         }
     }
     delay(500)
     job.cancel()
-    delay(600)
 }

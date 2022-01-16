@@ -12,9 +12,11 @@ fun `2 Cancellation`() = runBlocking {
                 yield()
             }
         } finally {
-            println("I am out!")
-            delay(100)
-            println("Am I?")
+            withContext(NonCancellable) {
+                println("I am out!")
+                delay(100)
+                println("Am I?")
+            }
         }
     }
     job.cancel()

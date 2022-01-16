@@ -8,13 +8,16 @@ import kotlinx.coroutines.runBlocking
 fun `1 Dispatchers`() = runBlocking {
     var count = 0
 
-    launch {
+    val job1 = launch {
         repeat(1_000_000) { count++ }
     }
 
-    launch {
+    val job2 = launch {
         repeat(1_000_000) { count++ }
     }
+
+    job1.join()
+    job2.join()
 
     println(count)
 }

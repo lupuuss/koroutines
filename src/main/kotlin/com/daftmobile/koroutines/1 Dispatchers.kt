@@ -2,15 +2,19 @@
 @file:OptIn(ExperimentalStdlibApi::class)
 package com.daftmobile.koroutines
 
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-fun `0 Introduction`() = runBlocking {
+fun `1 Dispatchers`() = runBlocking {
+    var count = 0
+
     launch {
-        delay(1000)
-        println(" world!")
+        repeat(1_000_000) { count++ }
     }
-    delay(500)
-    print("Hello ")
+
+    launch {
+        repeat(1_000_000) { count++ }
+    }
+
+    println(count)
 }

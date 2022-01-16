@@ -2,15 +2,11 @@
 @file:OptIn(ExperimentalStdlibApi::class)
 package com.daftmobile.koroutines
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.yield
+import kotlinx.coroutines.*
 
 fun `2 Cancellation`() = runBlocking {
     val job = launch(Dispatchers.Default) {
-        while (true) { println("XD") }
+        while (isActive) { println("XD") }
     }
-    yield()
     job.cancel()
 }

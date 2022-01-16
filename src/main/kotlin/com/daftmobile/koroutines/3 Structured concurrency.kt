@@ -4,16 +4,8 @@ package com.daftmobile.koroutines
 
 import kotlinx.coroutines.*
 
-fun `3 Structured concurrency`() = runBlocking(Dispatchers.Default) {
-    val job = launch {
-        launch {
-            println(1)
-        }
-        launch(Job(parent = coroutineContext[Job])) {
-            delay(1000)
-            println(2)
-        }
+fun `3 Structured concurrency`() = runBlocking<Unit>(Dispatchers.Default) {
+    launch(Job().apply(CompletableJob::complete)) {
+        println(":)")
     }
-    delay(500)
-    job.cancel()
 }

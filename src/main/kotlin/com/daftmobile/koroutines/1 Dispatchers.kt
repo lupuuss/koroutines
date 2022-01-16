@@ -4,19 +4,28 @@ package com.daftmobile.koroutines
 
 import kotlinx.coroutines.*
 
-fun `1 Dispatchers`() = runBlocking { // <--- ?
-    var count = 0
+fun `1 Dispatchers`() = runBlocking<Unit> {
+    log("START")
 
-    coroutineScope {
-        launch {
-            log()
-            repeat(1_000_000) { count++ }
-        }
+    launch(Dispatchers.Unconfined) {
+        log("Unconfined")
+        suspensionPoint()
+        log("Unconfined after delay")
+    }
 
-        launch {
-            log()
-            repeat(1_000_000) { count++ }
+    launch(Dispatchers.Default) { log("Default") }
+
+    launch(Dispatchers.IO) { log("IO") }
+
+    delay(500)
+
+    launch(Dispatchers.Main) { log("MAIN") }
+}
+
+private suspend fun suspensionPoint() {
+    newSingleThreadContext("7312").use {
+        withContext(it) {
+            println("SUSPENSION POINT")
         }
     }
-    println(count)
 }

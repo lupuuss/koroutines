@@ -2,4 +2,4 @@ package com.daftmobile.koroutines
 
 import kotlinx.coroutines.CoroutineScope
 
-fun CoroutineScope.log() = println("${Thread.currentThread().name} $coroutineContext")
+fun CoroutineScope.log(msg: Any = "") = println("$msg ${Thread.currentThread().name} $coroutineContext")

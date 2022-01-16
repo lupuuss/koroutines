@@ -6,7 +6,10 @@ import kotlinx.coroutines.*
 
 fun `2 Cancellation`() = runBlocking {
     val job = launch(Dispatchers.Default) {
-        while (isActive) { println("XD") }
+        while (true) {
+            println("XD")
+            yield()
+        }
     }
     job.cancel()
 }

@@ -1,23 +1,22 @@
 @file:Suppress("FunctionName")
 @file:OptIn(ExperimentalStdlibApi::class)
+
 package com.daftmobile.koroutines
 
 import kotlinx.coroutines.*
 
-fun `2 Cancellation`() = runBlocking {
-    val job = launch(Dispatchers.Default) {
-        try {
-            while (true) {
-                println("XD")
-                yield()
-            }
-        } finally {
-            withContext(NonCancellable) {
-                println("I am out!")
+fun `2 Cancellation`() = runBlocking<Unit> {
+    var count = 0
+
+    repeat(20) {
+        runCatching {
+            withTimeout(50) {
                 delay(100)
-                println("Am I?")
+                count++
             }
+            count--
         }
     }
-    job.cancel()
+
+    println(count)
 }

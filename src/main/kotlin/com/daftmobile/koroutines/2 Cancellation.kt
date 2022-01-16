@@ -9,11 +9,14 @@ fun `2 Cancellation`() = runBlocking<Unit> {
     var count = 0
 
     repeat(20) {
-        runCatching {
+        try {
             withTimeout(50) {
                 delay(49)
                 count++
             }
+        } catch (e: TimeoutCancellationException) {
+
+        } finally {
             count--
         }
     }

@@ -9,10 +9,12 @@ fun `1 Dispatchers`() = runBlocking {
 
     withContext(Dispatchers.Default) {
         launch {
+            log()
             repeat(1_000_000) { count++ }
         }
 
         launch {
+            log()
             repeat(1_000_000) { count++ }
         }
     }

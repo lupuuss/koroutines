@@ -16,4 +16,5 @@ fun `3 Structured concurrency`() = runBlocking(Dispatchers.Default) {
     }
     delay(500)
     job.cancel()
+    delay(600)
 }

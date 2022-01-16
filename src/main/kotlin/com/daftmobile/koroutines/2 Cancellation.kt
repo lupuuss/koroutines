@@ -11,7 +11,7 @@ fun `2 Cancellation`() = runBlocking<Unit> {
     repeat(20) {
         runCatching {
             withTimeout(50) {
-                delay(100)
+                delay(49)
                 count++
             }
             count--

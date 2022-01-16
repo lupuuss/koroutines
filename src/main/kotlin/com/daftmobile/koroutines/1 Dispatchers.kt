@@ -4,10 +4,10 @@ package com.daftmobile.koroutines
 
 import kotlinx.coroutines.*
 
-fun `1 Dispatchers`() = runBlocking {
+fun `1 Dispatchers`() = runBlocking { // <--- ?
     var count = 0
 
-    withContext(Dispatchers.Default) {
+    coroutineScope {
         launch {
             log()
             repeat(1_000_000) { count++ }
@@ -18,6 +18,5 @@ fun `1 Dispatchers`() = runBlocking {
             repeat(1_000_000) { count++ }
         }
     }
-
     println(count)
 }

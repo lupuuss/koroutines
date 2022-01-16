@@ -1,4 +1,4 @@
-@file:Suppress("FunctionName")
+@file:Suppress("FunctionName", "EXPERIMENTAL_API_USAGE")
 @file:OptIn(ExperimentalStdlibApi::class)
 package com.daftmobile.koroutines
 

@@ -5,20 +5,18 @@ package com.daftmobile.koroutines
 import kotlinx.coroutines.*
 
 fun `3 Structured concurrency`() {
-    val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    val scope = CoroutineScope(Dispatchers.Default + SupervisorJob() + CoroutineExceptionHandler { _, _ ->  })
     scope.launch {
-        supervisorScope {
-            launch {
-                delay(100)
-                throw IllegalStateException("BOOOOOOOOOOM!")
-            }
-            launch {
-                delay(1000)
-                println("Ready!")
-            }
-            delay(1000)
-            println("Done!")
+        launch(CoroutineExceptionHandler { _, _ ->  println("I should not work :(")}) {
+            delay(100)
+            throw IllegalStateException("BOOOOOOOOOOM!")
         }
+        launch {
+            delay(1000)
+            println("Ready!")
+        }
+        delay(1000)
+        println("Done!")
     }
     scope.launch {
         delay(1000)

@@ -11,8 +11,10 @@ import kotlin.coroutines.suspendCoroutine
 
 
 fun `4 Coroutines API`() = runBlocking<Unit> {
-    println(coRequest(2))
-    println(coRequest(1))
+    withTimeout(700) {
+        println(coRequest(2))
+        println(coRequest(1))
+    }
 }
 
 suspend fun coRequest(input: Int): Int = suspendCoroutine { continuation ->

@@ -14,12 +14,18 @@ fun `4 Coroutines API`() = runBlocking<Unit> {
 suspend fun doMath(): Int = coroutineScope {
     val result1 = async { sum1() }
     val result2 = async { sum2() }
-    result1.await() + result2.await()
+
+    val result1Awaited = runCatching { result1.await() }
+        .onFailure { println("Failed with $it!") }
+        .getOrElse { 0 }
+        .also { println("Result 1: $it") }
+
+     result1Awaited + result2.await()
 }
 
 suspend fun sum1(): Int {
     delay(1000)
-    return 2 + 1
+    throw IllegalStateException("123")
 }
 
 suspend fun sum2(): Int {

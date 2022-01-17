@@ -4,13 +4,13 @@ package com.daftmobile.koroutines
 
 import kotlinx.coroutines.*
 
-fun `3 Structured concurrency`() = runBlocking<Unit>(Dispatchers.Default) {
-    launch {
+fun `3 Structured concurrency`() {
+    val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    scope.launch {
         launch {
             delay(100)
             throw IllegalStateException("BOOOOOOOOOOM!")
         }
-
         launch {
             delay(1000)
             println("Ready!")
@@ -18,8 +18,10 @@ fun `3 Structured concurrency`() = runBlocking<Unit>(Dispatchers.Default) {
         delay(1000)
         println("Done!")
     }
-    launch {
+    scope.launch {
         delay(1000)
         println("ACK!")
     }
+
+    runBlocking { scope.coroutineContext.job.children.forEach { it.join() } }
 }

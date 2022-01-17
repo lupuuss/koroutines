@@ -5,22 +5,24 @@ package com.daftmobile.koroutines
 import kotlinx.coroutines.*
 
 fun `3 Structured concurrency`() {
-    val scope = CoroutineScope(Dispatchers.Default + SupervisorJob() + CoroutineExceptionHandler { _, _ ->  })
+    val handler = CoroutineExceptionHandler { _, exception ->
+        println(exception)
+        println(exception.suppressed.contentToString())
+    }
+    val scope = CoroutineScope(Dispatchers.Default + SupervisorJob() + handler)
     scope.launch {
-        launch(CoroutineExceptionHandler { _, _ ->  println("I should not work :(")}) {
+        launch {
             delay(100)
-            throw IllegalStateException("BOOOOOOOOOOM!")
+            throw IllegalStateException("1")
         }
         launch {
-            delay(1000)
-            println("Ready!")
+            delay(100)
+            throw IllegalStateException("2")
         }
-        delay(1000)
-        println("Done!")
-    }
-    scope.launch {
-        delay(1000)
-        println("ACK!")
+        launch {
+            delay(100)
+            throw IllegalStateException("3")
+        }
     }
 
     runBlocking { scope.coroutineContext.job.children.forEach { it.join() } }

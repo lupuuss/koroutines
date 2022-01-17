@@ -6,7 +6,7 @@ import kotlinx.coroutines.*
 
 fun `3 Structured concurrency`() {
     val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
-    scope.launch {
+    scope.launch(SupervisorJob()) {
         launch {
             delay(100)
             throw IllegalStateException("BOOOOOOOOOOM!")

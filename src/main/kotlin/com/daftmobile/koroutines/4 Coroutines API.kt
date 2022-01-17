@@ -3,14 +3,22 @@
 package com.daftmobile.koroutines
 
 import kotlinx.coroutines.*
+import kotlin.system.measureTimeMillis
 
-fun `4 Coroutines API`() = runBlocking {
-    val job = launch(start = CoroutineStart.LAZY) {
-        print("Hello ")
-        delay(100)
-        println(" world!")
-    }
-    println("JOB SCHEDULED")
-    delay(200)
-    job.join()
+fun `4 Coroutines API`() = runBlocking<Unit> {
+    measureTimeMillis {
+        val result1 = sum1()
+        val result2 = sum2()
+        println("Result = ${result1 + result2}")
+    }.also { println("Time = $it ms") }
+}
+
+suspend fun sum1(): Int {
+    delay(1000)
+    return 2 + 1
+}
+
+suspend fun sum2(): Int {
+    delay(1000)
+    return 3 + 7
 }

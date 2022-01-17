@@ -12,7 +12,7 @@ fun `3 Structured concurrency`() {
             println("DONE!")
         }
         runCatching {
-            launch {
+            coroutineScope {
                 throw IllegalStateException("2")
             }
         }

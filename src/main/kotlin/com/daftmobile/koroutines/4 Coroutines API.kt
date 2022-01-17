@@ -3,29 +3,33 @@
 package com.daftmobile.koroutines
 
 import kotlinx.coroutines.*
-import kotlin.system.measureTimeMillis
+import java.lang.IllegalStateException
+import kotlin.concurrent.thread
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
+
 
 fun `4 Coroutines API`() = runBlocking<Unit> {
-    measureTimeMillis {
-        println("Result = ${doMath()}")
-    }.also { println("Time = $it ms") }
+    println(coRequest(2))
+    println(coRequest(1))
 }
 
-suspend fun doMath(): Int = supervisorScope {
-    val result1 = async { sum1() }
-    val result2 = async { sum2() }
-
-    val result1Awaited = runCatching { result1.await() }.getOrElse { 0 }
-
-     result1Awaited + result2.await()
+suspend fun coRequest(input: Int): Int = suspendCoroutine { continuation ->
+    request(
+        input,
+        onSuccess = { continuation.resume(it) },
+        onError = { continuation.resumeWithException(it) }
+    )
 }
 
-suspend fun sum1(): Int {
-    delay(1000)
-    throw IllegalStateException("123")
-}
-
-suspend fun sum2(): Int {
-    delay(1000)
-    return 3 + 7
+fun request(input: Int, onSuccess: (Int) -> Unit, onError: (Exception) -> Unit) {
+    thread {
+        Thread.sleep(1000)
+        if (input == 1)  {
+            onError(IllegalStateException("BOOM!"))
+        } else {
+            onSuccess(input * 37)
+        }
+    }
 }

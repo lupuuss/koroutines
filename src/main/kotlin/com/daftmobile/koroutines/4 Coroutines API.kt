@@ -7,10 +7,14 @@ import kotlin.system.measureTimeMillis
 
 fun `4 Coroutines API`() = runBlocking<Unit> {
     measureTimeMillis {
-        val result1 = async { sum1() }
-        val result2 = async { sum2() }
-        println("Result = ${result1.await() + result2.await()}")
+        println("Result = ${doMath()}")
     }.also { println("Time = $it ms") }
+}
+
+suspend fun doMath(): Int = coroutineScope {
+    val result1 = async { sum1() }
+    val result2 = async { sum2() }
+    result1.await() + result2.await()
 }
 
 suspend fun sum1(): Int {

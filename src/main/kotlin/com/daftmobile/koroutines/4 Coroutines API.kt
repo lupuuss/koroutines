@@ -7,7 +7,9 @@ import kotlin.system.measureTimeMillis
 
 fun `4 Coroutines API`() = runBlocking<Unit> {
     measureTimeMillis {
-        println("Result = ${doMath()}")
+        runCatching {
+            println("Result = ${doMath()}")
+        }
     }.also { println("Time = $it ms") }
 }
 

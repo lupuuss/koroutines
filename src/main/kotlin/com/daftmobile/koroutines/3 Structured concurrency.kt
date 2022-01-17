@@ -5,7 +5,21 @@ package com.daftmobile.koroutines
 import kotlinx.coroutines.*
 
 fun `3 Structured concurrency`() = runBlocking<Unit>(Dispatchers.Default) {
-    launch(Job().apply(CompletableJob::complete)) {
-        println(":)")
+    launch {
+        launch {
+            delay(100)
+            throw IllegalStateException("BOOOOOOOOOOM!")
+        }
+
+        launch {
+            delay(1000)
+            println("Ready!")
+        }
+        delay(1000)
+        println("Done!")
+    }
+    launch {
+        delay(1000)
+        println("ACK!")
     }
 }

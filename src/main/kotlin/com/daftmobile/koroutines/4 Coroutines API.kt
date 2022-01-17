@@ -7,20 +7,15 @@ import kotlin.system.measureTimeMillis
 
 fun `4 Coroutines API`() = runBlocking<Unit> {
     measureTimeMillis {
-        runCatching {
-            println("Result = ${doMath()}")
-        }
+        println("Result = ${doMath()}")
     }.also { println("Time = $it ms") }
 }
 
-suspend fun doMath(): Int = coroutineScope {
+suspend fun doMath(): Int = supervisorScope {
     val result1 = async { sum1() }
     val result2 = async { sum2() }
 
-    val result1Awaited = runCatching { result1.await() }
-        .onFailure { println("Failed with $it!") }
-        .getOrElse { 0 }
-        .also { println("Result 1: $it") }
+    val result1Awaited = runCatching { result1.await() }.getOrElse { 0 }
 
      result1Awaited + result2.await()
 }
